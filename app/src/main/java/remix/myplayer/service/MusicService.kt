@@ -141,7 +141,7 @@ class MusicService : BaseService(), Playback, MusicEventCallback,
   /**
    * 播放完当前歌曲后是否停止app
    */
-  private var closeAfterCompletetion: Boolean = false
+  private var exitAfterCompletion: Boolean = false
 
   /**
    * MediaPlayer 负责歌曲的播放等
@@ -528,7 +528,7 @@ class MusicService : BaseService(), Playback, MusicEventCallback,
     //定时关闭
     SleepTimer.addCallback(object : SleepTimer.Callback {
       override fun onFinish() {
-        closeAfterCompletetion = true
+        exitAfterCompletion = true
       }
     })
 
@@ -598,7 +598,7 @@ class MusicService : BaseService(), Playback, MusicEventCallback,
     mediaPlayer.setWakeMode(this, PowerManager.PARTIAL_WAKE_LOCK)
 
     mediaPlayer.setOnCompletionListener { mp ->
-      if(closeAfterCompletetion){
+      if(exitAfterCompletion){
         sendBroadcast(Intent(EXIT)
             .setComponent(ComponentName(this@MusicService, ExitReceiver::class.java)))
         return@setOnCompletionListener
